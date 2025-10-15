@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Eswatitrading</title>
+  <style>
+    :root {
+      --bg-color: #f8f9fa;
+      --text-color: #333;
+      --card-bg: #fff;
+      --header-bg: #007bff;
+      --header-text: #fff;
+      --button-bg: #007bff;
+      --button-hover: #0056b3;
+      --border-color: #ccc;
+      --toolbar-bg: #fff;
+      --shadow: rgba(0, 0, 0, 0.1);
+    }
+    body.dark {
+      --bg-color: #121212;
+      --text-color: #f1f1f1;
+      --card-bg: #1e1e1e;
+      --header-bg: #222;
+      --header-text: #fff;
+      --button-bg: #28a745;
+      --button-hover: #1e7e34;
+      --border-color: #333;
+      --toolbar-bg: #1e1e1e;
+      --shadow: rgba(255, 255, 255, 0.1);
+    }
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    /* ===== Header ===== */
+    header {
+      background-color: var(--header-bg);
+      color: var(--header-text);
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    h1 {
+      margin: 0;
+      font-size: 1.8rem;
+      font-weight: bold;
+    }
+
+    /* ===== Hamburger Menu ===== */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      gap: 4px;
+    }
+    .hamburger div {
+      width: 25px;
+      height: 3px;
+      background-color: var(--header-text);
+      transition: all 0.3s;
+    }
+
+    .mobile-menu {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    /* ===== Toolbar ===== */
+    .toolbar {
+      background-color: var(--toolbar-bg);
+      position: sticky;
+      top: 70px;
+      z-index: 999;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      transition: background-color 0.3s, box-shadow 0.3s;
+    }
+    .search-bar {
+      display: flex;
+      align-items: center;
+      flex-grow: 1;
+      max-width: 400px;
+      margin-right: 10px;
+      width: 100%;
+    }
+    .search-bar input {
+      width: 100%;
+      padding: 8px;
+      border-radius: 5px 0 0 5px;
+      border: 1px solid var(--border-color);
+      background-color: var(--card-bg);
+      color: var(--text-color);
+    }
+    .search-bar button {
+      padding: 8px 12px;
+      border: none;
+      background-color: var(--button-bg);
+      color: white;
+      border-radius: 0 5px 5px 0;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    .search-bar button:hover {
+      background-color: var(--button-hover);
+    }
+    select {
+      padding: 8px;
+      border-radius: 5px;
+      border: 1px solid var(--border-color);
+      background-color: var(--card-bg);
+      color: var(--text-color);
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    /* ===== Buttons ===== */
+    .right-buttons {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .cart-icon, .theme-toggle {
+      position: relative;
+      cursor: pointer;
+      font-size: 1rem;
+      background-color: var(--card-bg);
+      color: var(--button-bg);
+      border: none;
+      border-radius: 5px;
+      padding: 8px 15px;
+      font-weight: bold;
+      box-shadow: 0 1px 3px var(--shadow);
+      transition: background-color 0.3s, color 0.3s;
+    }
+    .cart-count {
+      background-color: red;
+      color: white;
+      border-radius: 50%;
+      padding: 3px 7px;
+      font-size: 0.8rem;
+      position: absolute;
+      top: -8px;
+      right: -8px;
+    }
+
+    /* ===== Products ===== */
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      padding: 20px;
+      max-width: 1200px;
+      margin: auto;
+    }
+    .product {
+      background-color: var(--card-bg);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px var(--shadow);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s, background-color 0.3s;
+    }
+    .product:hover { transform: translateY(-5px); }
+    .product img { width: 100%; height: 200px; object-fit: cover; }
+    .product-content { padding: 15px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
+    .price { font-weight: bold; margin-bottom: 10px; }
+    button { background-color: var(--button-bg); color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; font-size: 1rem; transition: background-color 0.2s; }
+    button:hover { background-color: var(--button-hover); }
+
+    .load-more { display: block; margin: 20px auto; background-color: #28a745; }
+    .load-more:hover { background-color: #218838; }
+
+    footer { text-align: center; padding: 20px; background-color: var(--toolbar-bg); transition: background-color 0.3s; }
+
+    /* ===== Cart Popup ===== */
+    .cart-popup { position: fixed; right: 20px; top: 100px; background-color: var(--card-bg); border-radius: 10px; box-shadow: 0 2px 10px var(--shadow); padding: 20px; width: 320px; max-height: 70vh; overflow-y: auto; display: none; z-index: 2000; }
+
+    /* ===== Back to Top ===== */
+    #backToTop { position: fixed; bottom: 30px; right: 30px; background-color: var(--button-bg); color: white; border: none; border-radius: 50%; width: 45px; height: 45px; font-size: 1.4rem; cursor: pointer; display: none; box-shadow: 0 2px 6px var(--shadow); transition: background-color 0.3s, transform 0.2s; z-index: 3000; }
+    #backToTop:hover { background-color: var(--button-hover); transform: translateY(-3px); }
+
+    /* ===== Mobile Responsive ===== */
+    @media (max-width: 768px) {
+      header { flex-direction: row; justify-content: space-between; }
+      .hamburger { display: flex; }
+      .right-buttons { display: none; flex-direction: column; gap: 10px; }
+      .mobile-menu { display: none; }
+      .toolbar { flex-direction: column; gap: 10px; }
+      .search-bar, select { width: 100%; margin-top: 5px; }
+      .cart-popup { width: 90%; right: 5%; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Eswatitrading</h1>
+    <div class="hamburger" onclick="toggleHamburger(this)">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+    <div class="right-buttons" id="desktopButtons">
+      <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+      <button class="cart-icon" onclick="toggleCart()">🛒 Cart <span class="cart-count" id="cartCount">0</span></button>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="theme-toggle" onclick="toggleTheme()">🌙 Theme</button>
+    <button class="cart-icon" onclick="toggleCart()">🛒 Cart <span class="cart-count" id="cartCountMobile">0</span></button>
+  </div>
+
+  <div class="toolbar">
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Search for products..." />
+      <button onclick="filterProducts()">Search</button>
+    </div>
+    <select id="sortSelect" onchange="sortProducts()">
+      <option value="">Sort by</option>
+      <option value="priceLowHigh">Price: Low to High</option>
+      <option value="priceHighLow">Price: High to Low</option>
+      <option value="nameAZ">Name: A–Z</option>
+      <option value="nameZA">Name: Z–A</option>
+    </select>
+  </div>
+
+  <div class="products" id="products"></div>
+  <button class="load-more" id="loadMoreBtn" onclick="loadMore()">Load More Products</button>
+  <div class="cart-popup" id="cartPopup">
+    <h3>Your Cart</h3>
+    <div id="cartItems"></div>
+    <button class="checkout-btn" onclick="checkout()">Checkout</button>
+  </div>
+  <footer>&copy; 2025 Eswatitrading. All rights reserved.</footer>
+  <button id="backToTop" title="Back to Top" onclick="scrollToTop()">↑</button>
+
+  <script>
+    // Hamburger toggle
+    function toggleHamburger(el) {
+      el.classList.toggle('active');
+      const menu = document.getElementById('mobileMenu');
+      menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+    }
+
+    // Back to top
+    const backToTop = document.getElementById("backToTop");
+    window.onscroll = function() {
+      if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+        backToTop.style.display = "block";
+      } else { backToTop.style.display = "none"; }
+    };
+    function scrollToTop() { window.scrollTo({ top: 0, behavior: "smooth" }); }
+
+    // Add your Shopify fetchProducts, displayProducts, cart, theme, search, sort code here
+    // Copy all JS logic from previous version
+  </script>
+</body>
+</html>
