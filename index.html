@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
@@ -82,8 +82,8 @@ function toggleTheme(){document.body.classList.toggle('dark'); localStorage.setI
 
 // Build Shopify client
 const client = ShopifyBuy.buildClient({
-  domain: 'g0btje-sf.myshopify.com',
-  storefrontAccessToken: 'a611a53decc29f7df109ddf6cf70a442'
+  domain: 'uqqhun-g5.myshopify.com',
+  storefrontAccessToken: '2b48d1a73de5a73199bbb6847ded2bb2'
 });
 
 let productsContainer = document.getElementById('products');
@@ -98,10 +98,19 @@ async function initCheckout(){ checkout = await client.checkout.create(); }
 initCheckout();
 
 async function loadProducts(){
-  allProducts = await client.product.fetchAll();
-  productsContainer.innerHTML='';
-  productsShown=0;
-  loadMoreProducts();
+  try {
+    allProducts = await client.product.fetchAll();
+    if(!allProducts.length){
+      productsContainer.innerHTML = "<p style='text-align:center;color:red;'>No products found. Make sure they are active and available to Online Store.</p>";
+      return;
+    }
+    productsContainer.innerHTML='';
+    productsShown=0;
+    loadMoreProducts();
+  } catch (error) {
+    productsContainer.innerHTML = "<p style='color:red;text-align:center;'>Error loading products. Check your token and domain.</p>";
+    console.error(error);
+  }
 }
 
 function loadMoreProducts(){
