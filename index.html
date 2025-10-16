@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
@@ -34,9 +34,44 @@ select { padding:8px; border-radius:5px; border:1px solid var(--border-color); b
 #loadMoreBtn { display:block; margin:20px auto; padding:10px 20px; background-color:var(--button-bg); color:#fff; border:none; border-radius:5px; cursor:pointer;}
 #loadMoreBtn:hover { background-color:var(--button-hover);}
 footer { text-align:center; padding:20px; background-color:var(--toolbar-bg);}
-.cart-popup { position:fixed; right:20px; top:100px; width:320px; max-height:70vh; overflow-y:auto; background-color:var(--card-bg); border-radius:10px; box-shadow:0 2px 10px var(--shadow); padding:15px; display:none; z-index:2000; transition:transform 0.3s ease;}
-.cart-popup.show { transform: translateX(0);}
-#cartToggle { position:fixed; top:90px; right:20px; background-color:var(--button-bg); color:#fff; border:none; padding:10px 15px; border-radius:50px; cursor:pointer; z-index:3000;}
+#paymentMethods { text-align:center; margin:20px 0; }
+#paymentMethods img { height:30px; margin:0 5px; vertical-align:middle; }
+
+/* MoMo dark yellow */
+.momo-icon { filter: invert(32%) sepia(81%) saturate(4000%) hue-rotate(1deg) brightness(0.8) contrast(1); }
+
+/* CART POPUP ANIMATION */
+.cart-popup { 
+  position:fixed; right:-400px; top:100px; width:320px; max-height:70vh; overflow-y:auto; background-color:var(--card-bg); border-radius:10px; box-shadow:0 2px 10px var(--shadow); padding:15px; display:block; transition:right 0.4s ease, opacity 0.4s ease; opacity:0; z-index:2000;
+}
+.cart-popup.show { right:20px; opacity:1; }
+
+/* CART TOGGLE BUTTON ANIMATION */
+#cartToggle { 
+  position:fixed; top:90px; right:20px; background-color:var(--button-bg); color:#fff; border:none; padding:10px 15px; border-radius:50px; cursor:pointer; z-index:3000;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+#cartToggle:hover { transform: scale(1.1); box-shadow: 0 0 15px var(--button-bg); }
+
+/* BUY NOW BUTTON ANIMATION */
+button.buy-now { 
+  margin-top:5px; 
+  background-color:#ff5a5f; 
+  transition: transform 0.2s, box-shadow 0.2s; 
+  font-weight:bold;
+  color:#fff;
+  border-radius:5px;
+  cursor:pointer;
+}
+button.buy-now:hover { 
+  transform: scale(1.05); 
+  box-shadow: 0 0 10px #ff5a5f; 
+}
+
+/* OPTIONAL: Add subtle glow for all interactive buttons */
+button { transition: all 0.2s ease; }
+button:hover { filter: brightness(1.1); }
+
 #spinner { position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); border:6px solid #f3f3f3; border-top:6px solid var(--button-bg); border-radius:50%; width:50px; height:50px; animation:spin 1s linear infinite; display:none; z-index:4000;}
 @keyframes spin { 0% { transform:rotate(0deg);} 100% { transform:rotate(360deg);}}
 @media(max-width:768px){.toolbar{flex-direction:column;}.search-bar,input,select{width:100%;}}
@@ -73,6 +108,15 @@ footer { text-align:center; padding:20px; background-color:var(--toolbar-bg);}
 <button onclick="goToCheckout()">Go to Checkout</button>
 </div>
 
+<!-- Payment Methods -->
+<div id="paymentMethods">
+  <p>We accept:</p>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Visa_2014_logo_detail.svg" alt="Visa">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/Mastercard-logo.svg" alt="Mastercard">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/3/39/PayPal_logo.svg" alt="PayPal">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/3/3f/Mobile_Money_logo.svg" alt="MoMo" class="momo-icon">
+</div>
+
 <footer>&copy; 2025 Eswatitrading. All rights reserved.</footer>
 
 <script src="https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js"></script>
@@ -80,7 +124,6 @@ footer { text-align:center; padding:20px; background-color:var(--toolbar-bg);}
 (function(){const savedTheme=localStorage.getItem('theme'); if(savedTheme==='dark') document.body.classList.add('dark');})();
 function toggleTheme(){document.body.classList.toggle('dark'); localStorage.setItem('theme',document.body.classList.contains('dark')?'dark':'light');}
 
-// Shopify Client
 const client = ShopifyBuy.buildClient({
   domain: 'uqqhun-g5.myshopify.com',
   storefrontAccessToken: '2b48d1a73de5a73199bbb6847ded2bb2'
@@ -95,7 +138,6 @@ let productsShown = 0;
 const batchSize = 6;
 let spinner = document.getElementById('spinner');
 
-// Initialize checkout or fetch existing one from localStorage
 async function initCheckout(){
   const storedCheckoutId = localStorage.getItem('checkoutId');
   if(storedCheckoutId){
@@ -150,6 +192,7 @@ function loadMoreProducts(){
         <p>${p.description||''}</p>
         <p class="price">$${variant.price}</p>
         <button onclick='addToCart("${variant.id}")'>Add to Cart</button>
+        <button class="buy-now" onclick='buyNow("${variant.id}")'>Buy Now</button>
       </div>
     </div>`;
     productsContainer.innerHTML += html;
@@ -177,11 +220,7 @@ async function updateCart(){
 }
 
 function goToCheckout(){ window.location.href = checkout.webUrl; }
-
-function toggleCart(){
-  if(cartPopup.style.display==='block'){ cartPopup.style.display='none'; }
-  else{ cartPopup.style.display='block'; }
-}
+function toggleCart(){ cartPopup.classList.toggle('show'); }
 
 function filterProducts(){
   const term=document.getElementById('searchInput').value.toLowerCase();
@@ -201,6 +240,13 @@ function sortProducts(){
   productsContainer.innerHTML='';
   productsShown=0;
   loadMoreProducts();
+}
+
+// BUY NOW function
+async function buyNow(variantId){
+  const newCheckout = await client.checkout.create();
+  await client.checkout.addLineItems(newCheckout.id,[{variantId:variantId, quantity:1}]);
+  window.location.href = newCheckout.webUrl;
 }
 
 loadProducts();
