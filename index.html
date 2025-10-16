@@ -1,267 +1,157 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Eswatitrading</title>
-  <style>
-    :root {
-      --bg-color: #f8f9fa;
-      --text-color: #333;
-      --card-bg: #fff;
-      --header-bg: #007bff;
-      --header-text: #fff;
-      --button-bg: #007bff;
-      --button-hover: #0056b3;
-      --border-color: #ccc;
-      --toolbar-bg: #fff;
-      --shadow: rgba(0,0,0,0.1);
-    }
-    body.dark {
-      --bg-color: #121212;
-      --text-color: #f1f1f1;
-      --card-bg: #1e1e1e;
-      --header-bg: #222;
-      --header-text: #fff;
-      --button-bg: #28a745;
-      --button-hover: #1e7e34;
-      --border-color: #333;
-      --toolbar-bg: #1e1e1e;
-      --shadow: rgba(255,255,255,0.1);
-    }
-    body {
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: var(--bg-color);
-      color: var(--text-color);
-      transition: background-color 0.3s, color 0.3s;
-    }
-    header {
-      background-color: var(--header-bg);
-      color: var(--header-text);
-      padding: 15px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .theme-toggle {
-      cursor: pointer;
-      border: none;
-      background-color: var(--card-bg);
-      color: var(--button-bg);
-      padding: 8px 15px;
-      border-radius: 5px;
-      font-weight: bold;
-      box-shadow: 0 1px 3px var(--shadow);
-    }
-    .toolbar {
-      background-color: var(--toolbar-bg);
-      padding: 10px 20px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-    .search-bar input {
-      padding: 8px;
-      border-radius: 5px;
-      border: 1px solid var(--border-color);
-      background-color: var(--card-bg);
-      color: var(--text-color);
-    }
-    .search-bar button {
-      padding: 8px 12px;
-      border: none;
-      background-color: var(--button-bg);
-      color: white;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .products {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-      padding: 20px;
-      max-width: 1200px;
-      margin: auto;
-    }
-    .product {
-      background-color: var(--card-bg);
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 2px 8px var(--shadow);
-      transition: transform 0.2s;
-    }
-    .product:hover { transform: translateY(-5px); }
-    .product img { width: 100%; height: 200px; object-fit: cover; }
-    .product-content { padding: 15px; }
-    .price { font-weight: bold; color: var(--button-bg); }
-    #loadMoreBtn {
-      display: block;
-      margin: 20px auto;
-      padding: 10px 20px;
-      background-color: #28a745;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    footer {
-      text-align: center;
-      padding: 20px;
-      background-color: var(--toolbar-bg);
-    }
-    /* Mini cart popup */
-    .cart-popup {
-      position: fixed;
-      right: 20px;
-      top: 100px;
-      width: 300px;
-      max-height: 70vh;
-      overflow-y: auto;
-      background-color: var(--card-bg);
-      border-radius: 10px;
-      box-shadow: 0 2px 10px var(--shadow);
-      padding: 15px;
-      display: none;
-      z-index: 2000;
-    }
-    .cart-popup h3 {
-      margin-top:0; margin-bottom:10px;
-    }
-    .cart-popup button {
-      width: 100%;
-      padding:10px;
-      background-color: var(--button-bg);
-      color:#fff;
-      border:none;
-      border-radius:5px;
-      cursor:pointer;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Eswatitrading</title>
+<style>
+:root {
+  --bg-color: #f8f9fa;
+  --text-color: #333;
+  --card-bg: #fff;
+  --header-bg: #007bff;
+  --header-text: #fff;
+  --button-bg: #007bff;
+  --button-hover: #0056b3;
+  --border-color: #ccc;
+  --toolbar-bg: #fff;
+  --shadow: rgba(0,0,0,0.1);
+}
+body.dark {
+  --bg-color: #121212;
+  --text-color: #f1f1f1;
+  --card-bg: #1e1e1e;
+  --header-bg: #222;
+  --header-text: #fff;
+  --button-bg: #28a745;
+  --button-hover: #1e7e34;
+  --border-color: #333;
+  --toolbar-bg: #1e1e1e;
+  --shadow: rgba(255,255,255,0.1);
+}
+body { font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; margin:0; padding:0; background-color:var(--bg-color); color:var(--text-color); transition:0.3s;}
+header { background-color:var(--header-bg); color:var(--header-text); padding:15px 20px; display:flex; justify-content:space-between; align-items:center;}
+.theme-toggle { cursor:pointer; border:none; background-color:var(--card-bg); color:var(--button-bg); padding:8px 15px; border-radius:5px; font-weight:bold; box-shadow:0 1px 3px var(--shadow);}
+.toolbar { background-color:var(--toolbar-bg); padding:10px 20px; display:flex; justify-content:center; align-items:center; gap:10px; flex-wrap:wrap;}
+.search-bar input { padding:8px; border-radius:5px; border:1px solid var(--border-color); background-color:var(--card-bg); color:var(--text-color);}
+.search-bar button { padding:8px 12px; border:none; background-color:var(--button-bg); color:white; border-radius:5px; cursor:pointer;}
+.products { display:grid; grid-template-columns:repeat(auto-fit, minmax(250px,1fr)); gap:20px; padding:20px; max-width:1200px; margin:auto;}
+.product { background-color:var(--card-bg); border-radius:10px; overflow:hidden; box-shadow:0 2px 8px var(--shadow); transition:transform 0.2s;}
+.product:hover { transform: translateY(-5px);}
+.product img { width:100%; height:200px; object-fit:cover;}
+.product-content { padding:15px;}
+.price { font-weight:bold; color:var(--button-bg);}
+#loadMoreBtn { display:block; margin:20px auto; padding:10px 20px; background-color:#28a745; color:#fff; border:none; border-radius:5px; cursor:pointer;}
+footer { text-align:center; padding:20px; background-color:var(--toolbar-bg);}
+.cart-popup { position:fixed; right:20px; top:100px; width:300px; max-height:70vh; overflow-y:auto; background-color:var(--card-bg); border-radius:10px; box-shadow:0 2px 10px var(--shadow); padding:15px; display:none; z-index:2000;}
+.cart-popup h3 { margin-top:0;margin-bottom:10px;}
+.cart-popup button { width:100%; padding:10px; background-color:var(--button-bg); color:#fff; border:none; border-radius:5px; cursor:pointer;}
+</style>
 </head>
 <body>
-  <header>
-    <h1>Eswatitrading</h1>
-    <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
-  </header>
-  <div class="toolbar">
-    <div class="search-bar">
-      <input type="text" id="searchInput" placeholder="Search for products..." />
-      <button onclick="filterProducts()">Search</button>
-    </div>
+<header>
+<h1>Eswatitrading</h1>
+<button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+</header>
+
+<div class="toolbar">
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Search for products..." />
+    <button onclick="filterProducts()">Search</button>
   </div>
-  <div class="products" id="products">
-    <p style="text-align:center;">Loading products...</p>
-  </div>
-  <button id="loadMoreBtn" onclick="loadMoreProducts()">Load More Products</button>
+</div>
 
-  <div class="cart-popup" id="cartPopup">
-    <h3>Your Cart</h3>
-    <div id="cartItems"></div>
-    <button onclick="goToCheckout()">Go to Checkout</button>
-  </div>
+<div class="products" id="products">
+<p style="text-align:center;">Loading products...</p>
+</div>
 
-  <footer>&copy; 2025 Eswatitrading. All rights reserved.</footer>
+<button id="loadMoreBtn" onclick="loadMoreProducts()">Load More Products</button>
 
-  <!-- Shopify Buy SDK -->
-  <script src="https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js"></script>
-  <script>
-    // Theme toggle
-    (function(){
-      const savedTheme = localStorage.getItem('theme');
-      if(savedTheme==='dark') document.body.classList.add('dark');
-    })();
-    function toggleTheme(){
-      document.body.classList.toggle('dark');
-      localStorage.setItem('theme', document.body.classList.contains('dark')?'dark':'light');
-    }
+<div class="cart-popup" id="cartPopup">
+<h3>Your Cart</h3>
+<div id="cartItems"></div>
+<button onclick="goToCheckout()">Go to Checkout</button>
+</div>
 
-    // Shopify Buy Client
-    const client = ShopifyBuy.buildClient({
-      domain: 'Swazitraderg0btje-sf.myshopify.com',
-      storefrontAccessToken: '39a497754e16d8c077eb3d8f46e99c48'
-    });
+<footer>&copy; 2025 Eswatitrading. All rights reserved.</footer>
 
-    let productsContainer = document.getElementById('products');
-    let checkout;
-    let cartPopup = document.getElementById('cartPopup');
-    let cartItems = document.getElementById('cartItems');
-    let allProducts = [];
-    let productsShown = 0;
-    const batchSize = 6;
+<script src="https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js"></script>
+<script>
+(function(){const savedTheme=localStorage.getItem('theme'); if(savedTheme==='dark') document.body.classList.add('dark');})();
+function toggleTheme(){document.body.classList.toggle('dark'); localStorage.setItem('theme',document.body.classList.contains('dark')?'dark':'light');}
 
-    async function initCheckout(){
-      checkout = await client.checkout.create();
-    }
-    initCheckout();
+const client = ShopifyBuy.buildClient({
+  domain: 'Swazitraderg0btje-sf.myshopify.com', // old domain
+  storefrontAccessToken: '44a969360f244f40fb8154c663340690' // token you provided
+});
 
-    async function loadProducts(){
-      allProducts = await client.product.fetchAll();
-      productsContainer.innerHTML = '';
-      productsShown = 0;
-      loadMoreProducts();
-    }
+let productsContainer = document.getElementById('products');
+let checkout;
+let cartPopup = document.getElementById('cartPopup');
+let cartItems = document.getElementById('cartItems');
+let allProducts = [];
+let productsShown = 0;
+const batchSize = 6;
 
-    function loadMoreProducts(){
-      const nextBatch = allProducts.slice(productsShown, productsShown + batchSize);
-      nextBatch.forEach(p=>{
-        const variant = p.variants[0];
-        const html = `
-          <div class="product">
-            <img src="${p.images[0]?.src||'https://via.placeholder.com/300x200'}" alt="${p.title}">
-            <div class="product-content">
-              <h3>${p.title}</h3>
-              <p>${p.description||''}</p>
-              <p class="price">$${variant.price}</p>
-              <button onclick='addToCart("${variant.id}")'>Add to Cart</button>
-            </div>
-          </div>
-        `;
-        productsContainer.innerHTML += html;
-      });
-      productsShown += nextBatch.length;
-      if(productsShown >= allProducts.length){
-        document.getElementById('loadMoreBtn').style.display='none';
-      } else {
-        document.getElementById('loadMoreBtn').style.display='block';
-      }
-    }
+async function initCheckout(){ checkout = await client.checkout.create(); }
+initCheckout();
 
-    async function addToCart(variantId){
-      await client.checkout.addLineItems(checkout.id, [{variantId: variantId, quantity:1}]);
-      updateCart();
-    }
+async function loadProducts(){
+  allProducts = await client.product.fetchAll();
+  productsContainer.innerHTML='';
+  productsShown=0;
+  loadMoreProducts();
+}
 
-    async function updateCart(){
-      const freshCheckout = await client.checkout.fetch(checkout.id);
-      checkout = freshCheckout;
-      cartItems.innerHTML='';
-      checkout.lineItems.forEach(item=>{
-        const div = document.createElement('div');
-        div.textContent = `${item.title} x ${item.quantity}`;
-        cartItems.appendChild(div);
-      });
-      cartPopup.style.display='block';
-    }
+function loadMoreProducts(){
+  const nextBatch = allProducts.slice(productsShown, productsShown + batchSize);
+  nextBatch.forEach(p=>{
+    const variant = p.variants[0];
+    const html = `<div class="product">
+      <img src="${p.images[0]?.src||'https://via.placeholder.com/300x200'}" alt="${p.title}">
+      <div class="product-content">
+        <h3>${p.title}</h3>
+        <p>${p.description||''}</p>
+        <p class="price">$${variant.price}</p>
+        <button onclick='addToCart("${variant.id}")'>Add to Cart</button>
+      </div>
+    </div>`;
+    productsContainer.innerHTML += html;
+  });
+  productsShown += nextBatch.length;
+  if(productsShown >= allProducts.length){ document.getElementById('loadMoreBtn').style.display='none'; }
+  else{ document.getElementById('loadMoreBtn').style.display='block'; }
+}
 
-    function goToCheckout(){
-      window.location.href = checkout.webUrl;
-    }
+async function addToCart(variantId){
+  await client.checkout.addLineItems(checkout.id,[{variantId:variantId, quantity:1}]);
+  updateCart();
+}
 
-    function filterProducts(){
-      const term = document.getElementById('searchInput').value.toLowerCase();
-      const filtered = allProducts.filter(p=>p.title.toLowerCase().includes(term));
-      productsContainer.innerHTML='';
-      productsShown = 0;
-      allProducts = filtered;
-      loadMoreProducts();
-    }
+async function updateCart(){
+  const freshCheckout = await client.checkout.fetch(checkout.id);
+  checkout = freshCheckout;
+  cartItems.innerHTML='';
+  checkout.lineItems.forEach(item=>{
+    const div=document.createElement('div');
+    div.textContent = `${item.title} x ${item.quantity}`;
+    cartItems.appendChild(div);
+  });
+  cartPopup.style.display='block';
+}
 
-    // Initialize
-    loadProducts();
-  </script>
+function goToCheckout(){ window.location.href = checkout.webUrl; }
+
+function filterProducts(){
+  const term=document.getElementById('searchInput').value.toLowerCase();
+  const filtered=allProducts.filter(p=>p.title.toLowerCase().includes(term));
+  productsContainer.innerHTML='';
+  productsShown=0;
+  allProducts=filtered;
+  loadMoreProducts();
+}
+
+loadProducts();
+</script>
 </body>
 </html>
